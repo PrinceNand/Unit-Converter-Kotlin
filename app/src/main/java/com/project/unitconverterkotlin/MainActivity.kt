@@ -1,6 +1,7 @@
 package com.project.unitconverterkotlin
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -29,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.unitconverterkotlin.ui.theme.UnitConverterKotlinTheme
@@ -63,11 +65,13 @@ fun UnitConverter(name: String, modifier: Modifier){
     var oExpanded by remember { mutableStateOf(false) }
     var conversionFactor by remember { mutableStateOf(0.01) }
 
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val context = LocalContext.current;
         Text(text = name)
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
@@ -78,26 +82,31 @@ fun UnitConverter(name: String, modifier: Modifier){
 
         Row {
             Box {
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = { iExpanded = true }) {
                     Text(text = "Select")
                     Icon(Icons.Default.ArrowDropDown, contentDescription = "Arrow Down")
                 }
-                DropdownMenu(expanded = false, onDismissRequest = { /*TODO*/ }) {
-                 DropdownMenuItem(text = { Text("Centimeter") }, onClick = { /*TODO*/ })
-                 DropdownMenuItem(text = { Text("Meter") }, onClick = { /*TODO*/ })
-                 DropdownMenuItem(text = { Text("Feet") }, onClick = { /*TODO*/ })
-                 DropdownMenuItem(text = { Text("Millimeter") }, onClick = { /*TODO*/ })
+                DropdownMenu(expanded = iExpanded, onDismissRequest = { iExpanded = false }) {
+                    DropdownMenuItem(text = { Text("Centimeter") }, onClick = {
+                        iExpanded = false;
+                        inputUnit = "Centimeter"
+                        conversionFactor = 0.01
+                        Toast.makeText(context, "Centimeter Selected!", Toast.LENGTH_SHORT).show()
+                    })
+                    DropdownMenuItem(text = { Text("Meter") }, onClick = { /*TODO*/ })
+                    DropdownMenuItem(text = { Text("Feet") }, onClick = { /*TODO*/ })
+                    DropdownMenuItem(text = { Text("Millimeter") }, onClick = { /*TODO*/ })
                 }
             }
 
             Spacer(modifier = Modifier.width(16.dp))
 
             Box {
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = { oExpanded = true }) {
                     Text(text = "Select")
                     Icon(Icons.Default.ArrowDropDown, contentDescription = "Arrow Down")
                 }
-                DropdownMenu(expanded = false, onDismissRequest = { /*TODO*/ }) {
+                DropdownMenu(expanded = oExpanded, onDismissRequest = { oExpanded = false }) {
                     DropdownMenuItem(text = { Text("Centimeter") }, onClick = { /*TODO*/ })
                     DropdownMenuItem(text = { Text("Meter") }, onClick = { /*TODO*/ })
                     DropdownMenuItem(text = { Text("Feet") }, onClick = { /*TODO*/ })
