@@ -60,12 +60,12 @@ fun UnitConverter(name: String, modifier: Modifier){
 //    val inputValue = remember { mutableStateOf("") }    // required .value to get the value
     var inputValue by remember { mutableStateOf("") }  // doesn't required .value
     var outputValue by remember { mutableStateOf("") }
-    var inputUnit by remember { mutableStateOf("Centimeter") }
+    var inputUnit by remember { mutableStateOf("Meter") }
     var outputUnit by remember { mutableStateOf("Meter") }
     var  iExpanded by remember { mutableStateOf(false) }
     var oExpanded by remember { mutableStateOf(false) }
-    var conversionFactor by remember { mutableStateOf(0.01) }
-    var oConversionFactor by remember { mutableStateOf(0.01) }
+    var conversionFactor by remember { mutableStateOf(1.0) }
+    var oConversionFactor by remember { mutableStateOf(1.0) }
 
 
     // Unit converter function to convert value
@@ -86,14 +86,16 @@ fun UnitConverter(name: String, modifier: Modifier){
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = inputValue,
-            onValueChange = {inputValue = it},
+            onValueChange = {
+                inputValue = it
+                convertUnit()},
             label = {Text("Enter Value!")},
             modifier = Modifier.padding(16.dp))
 
         Row {
             Box {
                 Button(onClick = { iExpanded = true }) {
-                    Text(text = "Select")
+                    Text(text = inputUnit)
                     Icon(Icons.Default.ArrowDropDown, contentDescription = "Arrow Down")
                 }
                 DropdownMenu(expanded = iExpanded, onDismissRequest = { iExpanded = false }) {
@@ -129,7 +131,7 @@ fun UnitConverter(name: String, modifier: Modifier){
 
             Box {
                 Button(onClick = { oExpanded = true }) {
-                    Text(text = "Select")
+                    Text(text = outputUnit)
                     Icon(Icons.Default.ArrowDropDown, contentDescription = "Arrow Down")
                 }
                 DropdownMenu(expanded = oExpanded, onDismissRequest = { oExpanded = false }) {
@@ -160,6 +162,9 @@ fun UnitConverter(name: String, modifier: Modifier){
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Result: $outputValue $outputUnit")
     }
 }
 
