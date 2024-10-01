@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.unitconverterkotlin.ui.theme.UnitConverterKotlinTheme
+import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,12 +67,20 @@ fun UnitConverter(name: String, modifier: Modifier){
     var conversionFactor by remember { mutableStateOf(0.01) }
 
 
+    // Unit converter function to convert value
+    fun convertUnit() {
+        // ?: elvish operator
+        val inputValueDouble = inputValue.toDoubleOrNull() ?: 0.0
+        val result = (inputValueDouble * conversionFactor).roundToInt() / 100.0
+        outputValue = result.toString()
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val context = LocalContext.current;
+//        val context = LocalContext.current;
         Text(text = name)
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
@@ -91,11 +100,27 @@ fun UnitConverter(name: String, modifier: Modifier){
                         iExpanded = false;
                         inputUnit = "Centimeter"
                         conversionFactor = 0.01
-                        Toast.makeText(context, "Centimeter Selected!", Toast.LENGTH_SHORT).show()
+                        convertUnit()
+//                        Toast.makeText(context, "Centimeter Selected!", Toast.LENGTH_SHORT).show()
                     })
-                    DropdownMenuItem(text = { Text("Meter") }, onClick = { /*TODO*/ })
-                    DropdownMenuItem(text = { Text("Feet") }, onClick = { /*TODO*/ })
-                    DropdownMenuItem(text = { Text("Millimeter") }, onClick = { /*TODO*/ })
+                    DropdownMenuItem(text = { Text("Meter") }, onClick = {
+                        iExpanded = false;
+                        inputUnit = "Meter"
+                        conversionFactor = 1.0
+                        convertUnit()
+                    })
+                    DropdownMenuItem(text = { Text("Feet") }, onClick = {
+                        iExpanded = false;
+                        inputUnit = "Feet"
+                        conversionFactor = 0.3048
+                        convertUnit()
+                    })
+                    DropdownMenuItem(text = { Text("Millimeter") }, onClick = {
+                        iExpanded = false;
+                        inputUnit = "Millimeter"
+                        conversionFactor = 0.001
+                        convertUnit()
+                    })
                 }
             }
 
