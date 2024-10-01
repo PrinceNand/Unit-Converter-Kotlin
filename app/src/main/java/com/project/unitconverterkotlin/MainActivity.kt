@@ -23,6 +23,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,6 +52,17 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun UnitConverter(name: String, modifier: Modifier){
+
+    // states
+//    val inputValue = remember { mutableStateOf("") }    // required .value to get the value
+    var inputValue by remember { mutableStateOf("") }  // doesn't required .value
+    var outputValue by remember { mutableStateOf("") }
+    var inputUnit by remember { mutableStateOf("Centimeter") }
+    var outputUnit by remember { mutableStateOf("Meter") }
+    var  iExpanded by remember { mutableStateOf(false) }
+    var oExpanded by remember { mutableStateOf(false) }
+    var conversionFactor by remember { mutableStateOf(0.01) }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -55,7 +70,10 @@ fun UnitConverter(name: String, modifier: Modifier){
     ) {
         Text(text = name)
         Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(value = "", onValueChange = {},
+        OutlinedTextField(
+            value = inputValue,
+            onValueChange = {inputValue = it},
+            label = {Text("Enter Value!")},
             modifier = Modifier.padding(16.dp))
 
         Row {
@@ -64,7 +82,7 @@ fun UnitConverter(name: String, modifier: Modifier){
                     Text(text = "Select")
                     Icon(Icons.Default.ArrowDropDown, contentDescription = "Arrow Down")
                 }
-                DropdownMenu(expanded = true, onDismissRequest = { /*TODO*/ }) {
+                DropdownMenu(expanded = false, onDismissRequest = { /*TODO*/ }) {
                  DropdownMenuItem(text = { Text("Centimeter") }, onClick = { /*TODO*/ })
                  DropdownMenuItem(text = { Text("Meter") }, onClick = { /*TODO*/ })
                  DropdownMenuItem(text = { Text("Feet") }, onClick = { /*TODO*/ })
@@ -79,7 +97,7 @@ fun UnitConverter(name: String, modifier: Modifier){
                     Text(text = "Select")
                     Icon(Icons.Default.ArrowDropDown, contentDescription = "Arrow Down")
                 }
-                DropdownMenu(expanded = true, onDismissRequest = { /*TODO*/ }) {
+                DropdownMenu(expanded = false, onDismissRequest = { /*TODO*/ }) {
                     DropdownMenuItem(text = { Text("Centimeter") }, onClick = { /*TODO*/ })
                     DropdownMenuItem(text = { Text("Meter") }, onClick = { /*TODO*/ })
                     DropdownMenuItem(text = { Text("Feet") }, onClick = { /*TODO*/ })
@@ -90,7 +108,7 @@ fun UnitConverter(name: String, modifier: Modifier){
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun UnitConverterPreview() {
     UnitConverter(
